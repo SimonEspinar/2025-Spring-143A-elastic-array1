@@ -15,6 +15,22 @@
  * Confirms normal operation without triggering a resize.
  */
 
+import StorageService.ElasticArray;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class TestElasticArray {
+    @Test
+    public void testWriteWithinInitialCapacity() {
+        ElasticArray array = new ElasticArray();
+
+        final int idx = 0, val = 99;
+        array.write(idx, val);
+        int actual = array.read(0);
+        assertEquals(99, actual);
+    }
+
 /*
  * Test: testWriteTriggersResize
  *
@@ -23,6 +39,16 @@
  * Verifies the value is stored at the correct position after resizing.
  * Ensures internal capacity is updated appropriately.
  */
+    @Test
+    public void testWriteTriggersResize() {
+        ElasticArray array = new ElasticArray(50, 500);
+        final int idx = array.getCapacity();
+        final int val = 99;
+
+        array.write(idx, val);
+        int actual = array.read(idx);
+        assertEquals(val, actual);
+        }
 
 /*
  * Test: testNegativeWriteThrows
@@ -40,6 +66,13 @@
  * Ensures boundary checks are enforced on read operations.
  */
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testNegativeReadThrows() {
+        ElasticArray array = new ElasticArray(50, 500);
+        array.write(0, 99);
+        array.read(-1);
+    }
+
 /*
  * Test: testReadWithoutWriteThrows
  *
@@ -47,3 +80,5 @@
  * Verifies that an IndexOutOfBoundsException is thrown since no resize has occurred yet.
  * Tests that reads do not silently succeed outside bounds.
  */
+
+}

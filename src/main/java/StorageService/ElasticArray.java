@@ -1,3 +1,5 @@
+package StorageService;
+
 /*
  * Requirement: ElasticArray
  *
@@ -44,3 +46,51 @@
  * - Educational demonstrations of dynamic memory management and array resizing.
  */
 
+public class ElasticArray {
+    private int capacity;
+    private int chunkSize;
+    private int[] data;
+
+    // Getter
+    public int getCapacity() {
+        return capacity;
+    }
+
+    // Here is our constructor
+    public ElasticArray() {
+        this(50, 500);
+    }
+
+    // Another constrcutor
+
+    public ElasticArray(int capacity, int chunkSize) {
+        this.capacity = capacity;
+        this.chunkSize = chunkSize;
+        data = new int[capacity];
+    }
+
+    public void write(int index, int value) {
+        if(index < capacity){
+            data[index] = value;
+            return;
+        }
+        else{
+            while(capacity <= index) {
+                capacity = capacity + chunkSize;
+            }
+            int[] newArray = new int[capacity];
+            for(int i = 0; i < data.length; i++){
+                newArray[i] = data[i];
+            }
+            newArray[index] = value;
+            data = newArray;
+        }
+    }
+
+    public int read(int index) {
+        if(index >= 0 && index < capacity){
+            return data[index];
+        }
+        throw new IndexOutOfBoundsException("Index is negative");
+    }
+}
