@@ -23,12 +23,12 @@ import static org.junit.Assert.assertEquals;
 public class TestElasticArray {
     @Test
     public void testWriteWithinInitialCapacity() {
-        ElasticArray array = new ElasticArray();
-
+        ElasticArray array = new ElasticArray(); // what is 'array'?
+        System.out.println(array);
         final int idx = 0, val = 99;
         array.write(idx, val);
-        int actual = array.read(0);
-        assertEquals(99, actual);
+        int actual = array.read(idx);
+        assertEquals(val, actual);
     }
 
 /*
@@ -45,8 +45,8 @@ public class TestElasticArray {
         final int idx = array.getCapacity();
         final int val = 99;
 
-        array.write(idx, val);
-        int actual = array.read(idx);
+        array.write(array.getCapacity(), val);
+        int actual = array.read(array.getCapacity());
         assertEquals(val, actual);
         }
 
@@ -80,5 +80,20 @@ public class TestElasticArray {
  * Verifies that an IndexOutOfBoundsException is thrown since no resize has occurred yet.
  * Tests that reads do not silently succeed outside bounds.
  */
+
+    public void testReverse() {
+        ElasticArray array = new ElasticArray();
+        for (int i = 0; i < 10; i++) {
+            array.write(i, i + 10);
+        }
+        // copy has everything from 10 to 19
+        // copy array
+        ElasticArray copy = new ElasticArray();
+        // has everything from 10 to 19
+        // call the reverse twice
+        Main.reverse(array);
+        // verify the result is the same as the copy
+        assertEquals(copy, array);
+    }
 
 }

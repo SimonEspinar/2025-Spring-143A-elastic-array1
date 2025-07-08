@@ -56,6 +56,11 @@ public class ElasticArray {
         return capacity;
     }
 
+    // Setter
+    public void setCapacity(int newCapacity) {
+        capacity = newCapacity;
+    }
+
     // Here is our constructor
     public ElasticArray() {
         this(50, 500);
@@ -67,6 +72,15 @@ public class ElasticArray {
         this.capacity = capacity;
         this.chunkSize = chunkSize;
         data = new int[capacity];
+    }
+
+    public ElasticArray(ElasticArray anotherArray) {
+        this.capacity = anotherArray.capacity;
+        this.chunkSize = anotherArray.chunkSize;
+        data = new int[capacity];
+        for (int i = 0; i < capacity; i++) {
+            this.data[i] = anotherArray.data[i];
+        }
     }
 
     public void write(int index, int value) {
@@ -92,5 +106,31 @@ public class ElasticArray {
             return data[index];
         }
         throw new IndexOutOfBoundsException("Index is negative");
+    }
+
+    public String toString(){
+        // print out the content of the internal array data
+
+        String ret = "";
+
+        for(int i = 0; i < capacity; i++){
+            ret = ret + data[i] + " ";
+        }
+
+        return ret;
+    }
+
+    public boolean equals(Object obj){
+        ElasticArray anotherArray = (ElasticArray) obj;
+        if(capacity != anotherArray.capacity || chunkSize != anotherArray.chunkSize){
+            return false;
+        }
+        // copy every element
+        for(int i = 0; i < capacity; i++){
+            if(data[i] != anotherArray.data[i]){
+                return false;
+            }
+        }
+        return true;
     }
 }
