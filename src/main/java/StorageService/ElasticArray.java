@@ -46,10 +46,10 @@ package StorageService;
  * - Educational demonstrations of dynamic memory management and array resizing.
  */
 
-public class ElasticArray {
+public class ElasticArray<T> {
     private int capacity;
     private int chunkSize;
-    private int[] data;
+    private Object[] data;
 
     // Getter
     public int getCapacity() {
@@ -58,76 +58,91 @@ public class ElasticArray {
 
     // Setter
     public void setCapacity(int newCapacity) {
-        capacity = newCapacity;
+        this.capacity = capacity;
     }
 
-    // Here is our constructor
+
+    // Constructor
     public ElasticArray() {
         this(50, 500);
     }
 
-    // Another constrcutor
-
+    // Another constructor
     public ElasticArray(int capacity, int chunkSize) {
-        this.capacity = capacity;
         this.chunkSize = chunkSize;
-        data = new int[capacity];
+        this.capacity = capacity;
+        data = new Object[capacity];
     }
 
+    // Copy constructor, for deep copy
     public ElasticArray(ElasticArray anotherArray) {
-        this.capacity = anotherArray.capacity;
         this.chunkSize = anotherArray.chunkSize;
-        data = new int[capacity];
+        this.capacity = anotherArray.capacity;
+        data = new Object[capacity];
         for (int i = 0; i < capacity; i++) {
             this.data[i] = anotherArray.data[i];
         }
     }
 
     public void write(int index, int value) {
-        if(index < capacity){
+        /*
+        if index is within the initial capacity, write directly
+         */
+        if (index < capacity) {
             data[index] = value;
             return;
         }
-        else{
-            while(capacity <= index) {
-                capacity = capacity + chunkSize;
-            }
-            int[] newArray = new int[capacity];
-            for(int i = 0; i < data.length; i++){
-                newArray[i] = data[i];
-            }
-            newArray[index] = value;
-            data = newArray;
+
+        /*
+        otherwise, increase the capacity and then write
+         */
+        // calculate the new capacity
+        while (index >= capacity) {
+            capacity += chunkSize;
         }
+
+        int[] newData = new int[capacity];
+
+        // copy all the values from the current array
+        for (int i = 0; i < data.length; i++) {
+            newData[i] = data[i];
+        }
+
+        // add the new element at index
+        newData[index] = value;
+
+        // discard the old array
+        data = newData;
     }
 
-    public int read(int index) {
-        if(index >= 0 && index < capacity){
-            return data[index];
+    public T read(int index) {
+        if (index >= 0 && index < capacity) {
+            return (T)data[index]; // casting
         }
-        throw new IndexOutOfBoundsException("Index is negative");
+        throw new IndexOutOfBoundsException("index is too negative ;)");
     }
 
-    public String toString(){
-        // print out the content of the internal array data
-
+    @Override
+    public String toString() {
         String ret = "";
 
-        for(int i = 0; i < capacity; i++){
-            ret = ret + data[i] + " ";
+        for (int i = 0; i < capacity; i++) {
+            ret = ret + data[i] + ", ";
         }
 
         return ret;
     }
 
-    public boolean equals(Object obj){
+    @Override
+    public boolean equals(Object obj) {
         ElasticArray anotherArray = (ElasticArray) obj;
-        if(capacity != anotherArray.capacity || chunkSize != anotherArray.chunkSize){
+        if (capacity != anotherArray.capacity ||
+                chunkSize != anotherArray.chunkSize) {
             return false;
         }
         // copy every element
-        for(int i = 0; i < capacity; i++){
-            if(data[i] != anotherArray.data[i]){
+        for (int i = 0; i < capacity; i++) {
+            if (data[i] != anotherArray.data[i]) {
                 return false;
             }
         }

@@ -42,13 +42,15 @@ public class TestElasticArray {
     @Test
     public void testWriteTriggersResize() {
         ElasticArray array = new ElasticArray(50, 500);
-        final int idx = array.getCapacity();
         final int val = 99;
 
-        array.write(array.getCapacity(), val);
+        // capture capacity value before it's changes
+        int oldCapacity = array.getCapacity();
+        array.write(oldCapacity, val); //  array.getCapacity() is right beyond current index. should trigger
+        // resizing
         int actual = array.read(array.getCapacity());
         assertEquals(val, actual);
-        }
+    }
 
 /*
  * Test: testNegativeWriteThrows
@@ -81,18 +83,21 @@ public class TestElasticArray {
  * Tests that reads do not silently succeed outside bounds.
  */
 
+    @Test
     public void testReverse() {
         ElasticArray array = new ElasticArray();
         for (int i = 0; i < 10; i++) {
-            array.write(i, i + 10);
+            array.write(i, 10 + i);
         }
-        // copy has everything from 10 to 19
-        // copy array
-        ElasticArray copy = new ElasticArray();
-        // has everything from 10 to 19
-        // call the reverse twice
+
+        // make a reverse and deep copy of the original array
+        ElasticArray copy = new ElasticArray(array);  // deep copy
+        for (int i = 0; i < array.getCapacity(); i++) {
+            copy.write(array.getCapacity() - i - 1, array.read(i));
+        }
+
         Main.reverse(array);
-        // verify the result is the same as the copy
+
         assertEquals(copy, array);
     }
 
