@@ -132,7 +132,7 @@ public class ElasticArray<T> {
 
         return ret;
     }
-
+//
     @Override
     public boolean equals(Object obj) {
         ElasticArray anotherArray = (ElasticArray) obj;
