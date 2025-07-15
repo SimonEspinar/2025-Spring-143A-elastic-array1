@@ -1,4 +1,4 @@
-package StorageService;
+package ShelterService;
 
 /*
  * Requirement: ElasticArray
@@ -101,7 +101,7 @@ public class ElasticArray<T> {
             capacity += chunkSize;
         }
 
-        int[] newData = new int[capacity];
+        Object[] newData = new Object[capacity];
 
         // copy all the values from the current array
         for (int i = 0; i < data.length; i++) {

@@ -325,8 +325,8 @@ private String name; // Common data
 }
 
 // Concrete Class: implements the abstract behavior
-class Dog extends Animal {
-public Dog(String name) {
+class ShelterService.Dog extends Animal {
+public ShelterService.Dog(String name) {
 super(name);
 }
 
@@ -338,9 +338,9 @@ super(name);
 
 public class AbstractionExample {
 public static void main(String[] args) {
-// We can treat a Dog as an Animal (abstraction in action)
-Animal myDog = new Dog("Buddy");
-myDog.makeSound(); // Calls Dog's specific makeSound()
+// We can treat a ShelterService.Dog as an Animal (abstraction in action)
+Animal myDog = new ShelterService.Dog("Buddy");
+myDog.makeSound(); // Calls ShelterService.Dog's specific makeSound()
 System.out.println("My animal's name is: " + myDog.getName());
 }
 }
@@ -349,11 +349,11 @@ System.out.println("My animal's name is: " + myDog.getName());
 
 - Defines an Abstract Animal Class: It creates a blueprint for what an "Animal" is. It has a name (common data) and declares that all animals must be able to makeSound(), but it doesn't specify how they make that sound (that's left abstract). It also provides a concrete getName() method that all animals will inherit.
 
-- Defines a Concrete Dog Class: This class extends Animal, meaning a Dog is an Animal. It provides a specific implementation for the makeSound() method, defining that a dog "barks!".
+- Defines a Concrete ShelterService.Dog Class: This class extends Animal, meaning a ShelterService.Dog is an Animal. It provides a specific implementation for the makeSound() method, defining that a dog "barks!".
 
-- Creates and Uses a Dog Object: In the main method, an instance of Dog named "Buddy" is created. Crucially, it's referred to by its abstract type Animal (Animal myDog = new Dog("Buddy");).
+- Creates and Uses a ShelterService.Dog Object: In the main method, an instance of ShelterService.Dog named "Buddy" is created. Crucially, it's referred to by its abstract type Animal (Animal myDog = new ShelterService.Dog("Buddy");).
 
-- Demonstrates Polymorphic Behavior: When myDog.makeSound() is called, even though myDog is referenced as an Animal, the specific makeSound() implementation from the Dog class is executed, resulting in "Buddy barks!" being printed. It then prints the animal's name using the inherited getName() method.
+- Demonstrates Polymorphic Behavior: When myDog.makeSound() is called, even though myDog is referenced as an Animal, the specific makeSound() implementation from the ShelterService.Dog class is executed, resulting in "Buddy barks!" being printed. It then prints the animal's name using the inherited getName() method.
 
 Why it's a good choice: Abstraction focuses on showing only the essential features of an object while hiding the underlying
 complex implementation details. In Java, this is achieved through abstract classes and interfaces. It allows developers to work at

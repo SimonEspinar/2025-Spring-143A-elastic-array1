@@ -15,7 +15,7 @@
  * Confirms normal operation without triggering a resize.
  */
 
-import StorageService.ElasticArray;
+import ShelterService.ElasticArray;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 public class TestElasticArray {
     @Test
     public void testWriteWithinInitialCapacity() {
-        ElasticArray array = new ElasticArray(); // what is 'array'?
+        ElasticArray<Integer> array = new ElasticArray<>(); // what is 'array'?
         System.out.println(array);
         final int idx = 0, val = 99;
         array.write(idx, val);
@@ -41,14 +41,14 @@ public class TestElasticArray {
  */
     @Test
     public void testWriteTriggersResize() {
-        ElasticArray array = new ElasticArray(50, 500);
+        ElasticArray<Integer> array = new ElasticArray<>(50, 500);
         final int val = 99;
 
         // capture capacity value before it's changes
         int oldCapacity = array.getCapacity();
         array.write(oldCapacity, val); //  array.getCapacity() is right beyond current index. should trigger
         // resizing
-        int actual = array.read(array.getCapacity());
+        int actual = array.read(oldCapacity);
         assertEquals(val, actual);
     }
 
@@ -70,7 +70,7 @@ public class TestElasticArray {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testNegativeReadThrows() {
-        ElasticArray array = new ElasticArray(50, 500);
+        ElasticArray<Integer> array = new ElasticArray<>(50, 500);
         array.write(0, 99);
         array.read(-1);
     }
@@ -85,18 +85,19 @@ public class TestElasticArray {
 
     @Test
     public void testReverse() {
-        ElasticArray array = new ElasticArray();
+        ElasticArray<Integer> array = new ElasticArray<>();
         for (int i = 0; i < 10; i++) {
             array.write(i, 10 + i);
         }
 
         // make a reverse and deep copy of the original array
-        ElasticArray copy = new ElasticArray(array);  // deep copy
-        for (int i = 0; i < array.getCapacity(); i++) {
-            copy.write(array.getCapacity() - i - 1, array.read(i));
-        }
+        ElasticArray<Integer> copy = new ElasticArray<>(array);  // deep copy
 
-        Main.reverse(array);
+        ShelterService.Main.reverse(array);
+
+        for (int i = 0; i < 10; i++) {
+            copy.write(i, 19 - i);
+        }
 
         assertEquals(copy, array);
     }
